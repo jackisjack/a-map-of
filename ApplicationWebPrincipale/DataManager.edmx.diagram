@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="49f305201f8f4511b07951f1a392f461" Name="Diagram1" ZoomLevel="76">
+        <EntityTypeShape EntityType="A_MAP_OFModel.ELEMENT" Width="1.5" PointX="4.875" PointY="3.5" />
+        <EntityTypeShape EntityType="A_MAP_OFModel.OBJET" Width="1.5" PointX="7.125" PointY="3.5" />
+        <AssociationConnector Association="A_MAP_OFModel.FK_ELEMENT_OBJET" />
+        <EntityTypeShape EntityType="A_MAP_OFModel.LIEN" Width="1.5" PointX="9.875" PointY="3.5" />
+        <AssociationConnector Association="A_MAP_OFModel.FK_LIEN_OBJET" />
+        <AssociationConnector Association="A_MAP_OFModel.FK_LIEN_OBJET1" />
+        <EntityTypeShape EntityType="A_MAP_OFModel.TUTO" Width="1.5" PointX="6.875" PointY="0.75" />
+        <EntityTypeShape EntityType="A_MAP_OFModel.TUTODONE" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
+        <AssociationConnector Association="A_MAP_OFModel.FK_TUTODONE_TUTODONE" />
+        <EntityTypeShape EntityType="A_MAP_OFModel.TYPEOBJET" Width="1.5" PointX="6.25" PointY="8" />
+        <AssociationConnector Association="A_MAP_OFModel.FK_OBJET_TYPEOBJET" />
+        <AssociationConnector Association="A_MAP_OFModel.FK_ELEMENT_TYPEOBJET" />
+        <EntityTypeShape EntityType="A_MAP_OFModel.USER" Width="1.5" PointX="2.75" PointY="3.375" />
+        <AssociationConnector Association="A_MAP_OFModel.FK_USER_USER" />
+        <AssociationConnector Association="A_MAP_OFModel.FK_TUTODONE_USER" />
+        <EntityTypeShape EntityType="A_MAP_OFModel.VUE" Width="1.5" PointX="9.25" PointY="8.625" />
+        <AssociationConnector Association="A_MAP_OFModel.FK_VUE_USER" />
+        <AssociationConnector Association="A_MAP_OFModel.FK_ELEMENT_VUE" />
+        <EntityTypeShape EntityType="A_MAP_OFModel.TUTOSTEP" Width="1.5" PointX="9.25" PointY="0.75" />
+        <AssociationConnector Association="A_MAP_OFModel.FK_TUTOSTEP_TUTOSTEP" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

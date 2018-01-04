@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html>
+
+    <head>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width" />
+        <title>@ViewBag.Title</title>
+
+        @*Intégration des scripts externes *@
+
+        @Scripts.Render("~/bundles/scriptsE")
+
+        @if (ViewBag.Title == "A map of")
+        {
+            @*Intégration des scripts applicatifs *@
+
+            @Scripts.Render("~/bundles/scriptsA")
+
+        }
+
+        @* même logique pour les feuilles de style *@
+
+        @Styles.Render("~/bundles/stylesE")
+
+        <link href="~/Content/jquery-ui.theme.min.css" rel="stylesheet" />
+        <link href="~/Content/jquery-ui.structure.min.css" rel="stylesheet" />
+        <link href="~/Content/jquery-ui.css" rel="stylesheet" />
+
+        @if (ViewBag.Title == "A map of")
+        {
+
+            @Styles.Render("~/bundles/stylesA")
+
+        }
+
+        @*Police d'écriture*@
+
+        <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato" />
+
+    </head>
+
+    
+        @RenderBody()
+
+</html>

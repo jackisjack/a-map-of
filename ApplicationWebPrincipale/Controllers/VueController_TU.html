@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="../Scripts/applicatifs/technique/appels_api.js"></script>
+    <script src="../Scripts/externes/jsonviewer/jjsonviewer.js"></script>
+    <link href="../Scripts/externes/jsonviewer/jjsonviewer.css" rel="stylesheet" />
+
+</head>
+
+<body>
+
+    <script>
+
+        //**********************************************************************************************************
+        // APPELS
+
+        // POST
+
+
+        // GET
+
+        //API_Vue_GET("Hello World", AfficherJSON);
+        //API_Vue_GET(null, AfficherJSON);
+        //API_Vue_Full_GET(6, AfficherJSON);
+
+        //**********************************************************************************************************
+
+        function AfficherJSON(data) {
+
+            if (data === "" || data === 0) {
+                data = ["succès - résultat vide ou zéro"];
+            }
+
+            $("#resultat").jJsonViewer(data);
+
+        }
+
+    </script>
+
+    <div id="resultat">
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,461 @@
+﻿<body onload="MainSiManager.Init();">
+
+    @* MESSAGE 'LOADING' *@
+
+    <div id="myModal" class="modal" style="font-family: Lato;color:gainsboro;font-size:40pt;">
+
+        <img src="~/Images/icone/loading.gif" />
+        <p></p>
+
+    </div>
+
+    @* BANDEAU HAUT *@
+
+    <nav class="navbar navbar-default navbar-fixed-top MenuACacher" style="cursor:default;border-width:0px;background-color:white;border-bottom:solid;border-bottom-width:1px;border-bottom-color:gainsboro;">
+
+        @* ICONE ORGANISATION  *@
+
+        <div class="container" style="margin-left:0px;display:table-cell;padding:20px;vertical-align: middle;">
+            <img alt="Brand" src="../Images/icone/icone_organisation.png" style="width:120px;opacity:0.7;">
+        </div>
+
+        @* NOM ORGANISATION  *@
+
+        <div style="display: table-cell;vertical-align: middle;font-size: 30px;font-family: Lato;color:gainsboro;white-space: nowrap;">
+            France maps
+        </div>
+
+        @* MENU DU HAUT *@
+
+        <div style="display: table-cell;vertical-align: middle;color:gainsboro;font-family: Lato;white-space: nowrap;">
+
+            <ul class="nav navbar-nav" style="margin-left:50px;margin-top:10px;">
+
+                <li class="dropdown">
+                    <a href="#test" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <span class="titremenu">CARTES</span>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="titresousmenu">&nbsp;&nbsp;Actions</li>
+                        <li><a href="#" onclick="OuvrirForm_OuvrirVue();">Ouvrir</a></li>
+                        <li><a href="#" onclick="OuvrirForm_EnregistrerVue();">Enregistrer</a></li>
+                        <li><a href="#">Nouvelle</a></li>
+                    </ul>
+                </li>
+
+                <li class="dropdown">
+                    <a href="#test" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <span class="titremenu">OPTIONS</span>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#" onclick="OuvrirForm_dialogTypeObjetTous();">Types d'objet</a></li>
+                    </ul>
+                </li>
+
+                <li class="dropdown">
+                    <a href="#test" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" onclick="OuvrirForm_ListeTuto();">
+                        <img src="~/Images/icone/glyphicons-501-education.png" />
+                        <span class="titremenu"> TUTOS <span class="badge" id="NbTutoPasFait"></span></span>
+                        <span class="caret"></span> 
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>
+
+    </nav>
+
+    @* CANVAS : lieu d'expression de createjs et tweenjs *@
+
+    <canvas id="MainCanvas" class="CalqueCanvas">
+    </canvas>@* ça parait pas comme ça, mais c'est bourré de trucs jolis*@
+    
+    @* MENU GAUCHE : liste des modes d'actions *@
+
+    <div class="vertical-menu MenuACacher">
+        <a href="#" class="glyphicon glyphicon-plus" title="Ajout unitaire" onclick="MenuGauche(this,EnumModeAction.AjoutUnitaire);"></a>
+        <a href="#" class="glyphicon glyphicon-remove" title="Ajout multiple" onclick="MenuGauche(this,EnumModeAction.AjoutMultiple);"></a>
+        <a href="#" class="glyphicon glyphicon-map-marker" title="Focus" onclick="MenuGauche(this,EnumModeAction.Focus);"></a>
+        <a href="#" class="glyphicon glyphicon-random" title="Lier" onclick="MenuGauche(this,EnumModeAction.Lier);"></a>
+        <a href="#" class="glyphicon glyphicon-move" title="Déplacer" onclick="MenuGauche(this,EnumModeAction.Deplacer);"></a>
+        @* TEST UNITAIRE *@
+        <a href="#" class="glyphicon glyphicon-adjust" title="TEST" 
+           onclick="UnitTest();"></a>
+
+    </div>
+
+    @* MENU DROITE : coordonnées de la souris *@
+
+    <div class="menu-bas-droite MenuACacher">
+        <span id="x_mouse">x:100,</span>
+        <span id="y_mouse">y:200,</span>
+        <span id="zoomratio">zoom: 1</span>
+    </div>
+
+    @* MENU DU BAS *@
+
+    <nav id="MenuDuBas" class="navbar navbar-default navbar-fixed-bottom MenuACacher"
+         style="cursor:default;border-width:0px;border-top:solid;border-top-width:1px;border-top-color:gainsboro;">
+
+        @* BARRE DU BAS : SEARCHBOX *@
+
+        <input type="text" class="form-control" id="CommandLine" />
+           
+        @* BARRE DU BAS : LES TYPES D'OBJETS FAVORIS *@
+
+        <div class="navbar-brand MenuACacher" style="overflow:scroll;width:100%;overflow-y:hidden;">
+
+            @*Futur réceptacle du template enrichi par les données de l'API*@
+
+            <div class="content-ListeObjetFavorisMenu MenuACacher"></div>
+
+            @* Template du menu *@
+
+            <script id="ListeObjetFavorisMenu-template" type="text/x-handlebars-template">
+
+                <div id="ConteneurListeIcone" style="width:5000px;">
+
+                    @* Les objets favoris *@
+
+                    {{#each ListeObjetFavorisMenu}}
+
+                    <a href="#">
+                        <figure class="buttonMenuUser">
+                            <img class="IconeDraggable" alt="{{IDTYPEOBJET}}" src="/Images/{{ICONE}}">
+                            <figcaption>{{LIBELLE}}</figcaption>
+                        </figure>
+                    </a>
+
+                    {{/each}}
+                </div>
+            </script>
+
+            @*Appel de l'Api, déclenchement du remplissage du réceptacle
+            et Action de glisser-déposer des icones du menu*@
+
+            <script>
+
+                // appel de l'appel de l'api
+
+                API_TypeObjet_GET_Favoris(TypeObjet_ListerFavorisMenu_Loaded);
+
+                // traitement du retour de l'api, et transfert vers le générateur HTML
+                // et handle du clic
+
+                function TypeObjet_ListerFavorisMenu_Loaded(data) {
+
+                    //construction du contexte
+
+                    var context = {
+                        ListeObjetFavorisMenu: data
+                    };
+
+                    // Appel du générateur HTML
+
+                    GenerateurHTML("#ListeObjetFavorisMenu-template", context, '.content-ListeObjetFavorisMenu');
+
+                    // Ajustement du conteneur à icone.
+
+                    $("#ConteneurListeIcone").width(65 + data.length * (60 + 5) + (80 - 60));
+                    // 65 le premier icone (hub), puis autant d'espace qu'il y a d'icone type objet + la taille du grossissement éventuel lorsqu'on passe la souris dessus
+                    // 65 = 60 (width) + 5 (margin-right)
+
+                    // Draggable sur les éléments générés
+
+                    $(function () {
+
+                        $(".IconeDraggable").draggable(
+                            {
+                                helper: "clone",
+                                stop: function (event, ui) { // à la fin du drop !
+
+                                    // Récupération de la position de la souris
+                                    var x = Graphisme.VueFocus.MousePosX;
+                                    var y = Graphisme.VueFocus.MousePosY;
+
+                                    // Récupération de l'objet draggé (obtenu de façon dégueulasse par son attribut alt... pas mieux trouvé...')
+                                    // (cela peut être un hub)
+
+
+                                    var objTypeObjet;
+                                    var LibelleTypeObjet;
+
+                                    var IdTypeObjet = parseInt(ui.helper[0].alt);
+
+                                    if (IdTypeObjet !== -1) { // Si la sélection n'est pas un hub
+
+                                        objTypeObjet = $.grep(VariablesGlobales.ImagesArray, function (e) { return e.idtypeobjet === IdTypeObjet; });
+                                        LibelleTypeObjet = objTypeObjet[0].libelle;
+
+                                    }
+
+                                    // calculé du libellé
+
+                                    switch (VariablesGlobales.TypeSelection) {
+                                        case EnumModeAction.AjoutUnitaire:
+
+                                            if (LibelleTypeObjet !== undefined) {
+
+                                                // Ouverture de la fenêtre d'ajout d'objet unitaire
+
+                                                OuvrirForm_NomInstanceObjet(IdTypeObjet, LibelleTypeObjet, x, y);
+
+                                            } else {
+
+                                                // Ouverture de la fenêtre d'ouverture de hub
+
+                                                Form_NouveauHub(x, y);
+
+                                            }
+
+                                            break;
+
+                                        default:
+
+                                            console.log('tu es un idiot développeur !');
+                                            break;
+
+                                    }
+
+                                }
+                            }
+                        );
+                    });
+
+                }
+
+            </script>
+
+        </div>
+
+    </nav>
+
+    @* FENETRE : gérer les types d'objet *@
+
+    <div id="dialogTypeObjetTous" style="cursor:default;display:none;">
+
+        @*Futur réceptacle du template enrichi par les données de l'API*@
+
+        <div class="content-ListeObjetTous"></div>
+
+        @* Template (et le script utile)*@
+
+        <script id="ListeTypeObjet-template" type="text/x-handlebars-template">
+
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th>Illustration</th>
+                        <th>Nom</th>
+                        <th>Favoris</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {{#each ListeObjetTous}}
+
+                    <tr>
+                        <td><img class="IconeDraggable" alt="{{IDTYPEOBJET}}" src="/Images/{{ICONE}}"></td>
+                        <td>{{LIBELLE}}</td>
+
+                        {{#ifCond FAVORISMENUtrim '==' 'O'}}
+                        <td><input type="checkbox" value="" checked onchange="toggleCheckbox({{IDTYPEOBJET}},this)" /></td>
+                        {{else}}
+                        <td><input type="checkbox" value="" onchange="toggleCheckbox({{IDTYPEOBJET}},this)" /></td>
+                        {{/ifCond}}
+
+                    </tr>
+
+                    {{/each}}
+
+                </tbody>
+            </table>
+
+        </script>
+
+    </div>
+
+    @* FENETRE : saisie d'un objet unitaire *@
+
+    <div id="dialogNomInstanceObjet" style="cursor:default;display:none;overflow:hidden;">
+
+        <style> /* Personnalisation de la taille trop grande de l'autocomplete */
+            .ui-autocomplete {
+                max-height: 150px;
+                overflow-y: auto;
+                /* prevent horizontal scrollbar */
+                overflow-x: hidden;
+                /* add padding to account for vertical scrollbar */
+                padding-right: 20px;
+            }
+        </style>
+
+        <form class="form-horizontal">
+            <input type="hidden" name="x" value="">
+            <input type="hidden" name="y" value="">
+            <input type="hidden" name="IdTypeObjet" value="">
+            <div class="form-group">
+                <label for="TypeObjet" class="col-sm-1 control-label">Type</label>
+                <div class="col-sm-11">
+                    <input type="text" class="form-control" id="TypeObjet" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="NomObjet" class="col-sm-1 control-label">Nom</label>
+                <div class="col-sm-11">
+                    <input type="text" class="form-control" id="NomObjet" autocomplete="off">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="NomObjet" class="col-sm-1 control-label"></label>
+                <div class="col-sm-11">
+                    <span>En lien avec :</span>
+                    <span id="LienTypeObjet" class="label label-primary"></span>
+                    <span id="LienObjet" class="label label-primary"></span>
+                    <span id="LienHub" class="label label-primary">Hub libre</span>
+                </div>
+            </div>
+            <div class="form-group" style="text-align:right;margin-right:10px;margin-top:70px;">
+                <button type="button" class="btn btn-default" onclick="Form_NomInstanceObjet_ClickValider();">Valider</button>
+            </div>
+        </form>
+ 
+    </div>
+
+    @* FENETRE : liste des tutos *@
+
+    <div id="dialogListeTuto" style="cursor:default;display:none;overflow:hidden;">
+
+        @*Futur réceptacle du template enrichi par les données de l'API*@
+
+        <div class="content-ListeTuto"></div>
+
+        @* Template (et le script utile)*@
+
+        <script id="ListeTuto-template" type="text/x-handlebars-template">
+            
+            <br />
+
+            <p> Connaissances acquises : </p>
+
+            <div class="progress">
+                <div class="progress-bar" id="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="min-width: 2em;width:1%">
+                    <p>0%</p>
+                </div>
+            </div>
+            
+            <p>Que voulez-vous savoir faire ?</p>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {{#each ListeTuto}}
+
+                    <tr>
+                        <td valign="middle" style="font-weight: bold;">{{LIBELLE}}</td>
+                        <td valign="middle" style="font-weight: bold;color:green;">{{DEJAFAIT}}</td>
+                        <td align="right"><button class="btn btn-primary" type="submit" onclick="Tuto_Execution({{IDTUTO}});">LANCER</button></td>
+                    </tr>
+
+                    {{/each}}
+
+                </tbody>
+            </table>
+
+        </script>
+
+    </div>
+
+    @* FENETRE : tutos : indication *@
+
+    <div id="dialogTutosIndication" style="cursor:default;display:none;overflow:hidden;">
+        
+        <p>*** en cours de chargement ***</p>
+        
+        <div class="form-group" style="text-align:left;margin-right:2px;margin-bottom:2px;">
+            
+            <button type="button" class="btn btn-sm" aria-label="Left Align" data-toggle="tooltip" title="Recommencer depuis le début" onclick="VariablesGlobales.TutoEnCours.Recommencer();">
+                <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+            </button>
+
+            <button type="button" id="TutoBoutonSucces" class="btn btn-success btn-sm" aria-label="Left Align" style="color:white;display:none;" onclick="VariablesGlobales.TutoEnCours.NextStep()">
+                <span class="glyphicon glyphicon-ok"></span> CONTINUER
+            </button>
+
+            <button type="button" id="TutoBoutonTerminer" class="btn btn-success btn-sm" aria-label="Left Align" style="color:white;display:none;" onclick="VariablesGlobales.TutoEnCours.BackToListeTutos()">
+                <span class="glyphicon glyphicon-ok"></span> APPRENDRE ENCORE
+            </button>
+
+        </div>
+
+    </div>
+  
+    @* FENETRE : enregistrement de la vue *@
+
+    <div id="dialogVue" style="cursor:default;display:none;overflow:hidden;">
+
+        <form class="form-horizontal">
+
+            <div class="form-group" style="margin-top:10px;">
+                <label for="NomVue" class="col-sm-1 control-label">Nom :</label>
+                <div class="col-sm-11">
+                    <input type="text" class="form-control" id="NomVue" />
+                </div>
+            </div>
+            <div class="form-group" style="text-align:right;margin-right:10px;">
+                <button type="button" class="btn btn-default" onclick="OuvrirForm_EnregistrerVue_BoutonEnregistrer();">Enregistrer</button>
+            </div>
+        </form>
+
+    </div>
+
+    @* FENETRE : ouverture d'une vue *@
+
+    <div id="dialogListeMesVues" style="cursor:default;display:none;">
+
+        @*Futur réceptacle du template enrichi par les données de l'API*@
+
+        <div class="content-ListeMesVues"></div>
+
+        @* Template (et le script utile)*@
+
+        <script id="ListeMesVues-template" type="text/x-handlebars-template">
+
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th>LIBELLE</th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {{#each ListeMesVues}}
+
+                    <tr>
+                        <td>{{LIBELLE}}</td>
+                        <td align="right" class="col-md-1"><button class="btn btn-danger" type="submit" onclick="OuvrirForm_SupprimerVue({{IDVUE}});">X</button></td>
+                        <td align="right" class="col-md-1"><button class="btn btn-primary" type="submit" onclick="Graphisme.OuvrirVue({{IDVUE}});">OUVRIR</button></td>
+                    </tr>
+
+                    {{/each}}
+
+                </tbody>
+            </table>
+
+        </script>
+
+    </div>
+
+</body>

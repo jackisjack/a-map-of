@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationWebPrincipale", "ApplicationWebPrincipale\ApplicationWebPrincipale.csproj", "{BC7B8191-488D-4BA9-87AD-2D0D2358588E}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "Database", "Database\Database.sqlproj", "{F358EBC3-E04F-4A45-92EB-572E9FA56ACC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BC7B8191-488D-4BA9-87AD-2D0D2358588E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC7B8191-488D-4BA9-87AD-2D0D2358588E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC7B8191-488D-4BA9-87AD-2D0D2358588E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC7B8191-488D-4BA9-87AD-2D0D2358588E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F358EBC3-E04F-4A45-92EB-572E9FA56ACC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F358EBC3-E04F-4A45-92EB-572E9FA56ACC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F358EBC3-E04F-4A45-92EB-572E9FA56ACC}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{F358EBC3-E04F-4A45-92EB-572E9FA56ACC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F358EBC3-E04F-4A45-92EB-572E9FA56ACC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F358EBC3-E04F-4A45-92EB-572E9FA56ACC}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BFF2CBBB-C23A-4B04-9484-F69B406ECE87}
+	EndGlobalSection
+EndGlobal

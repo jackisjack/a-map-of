@@ -1,0 +1,104 @@
+﻿@model SIMANAGER.Utilisateur
+
+<body>
+
+
+    <div class="container" style="width:400px;height:1000px;float:none;margin: 0 auto;margin-top:10%;">
+        
+        <img src="~/Images/icone/amapof.png" style="margin-left:110px;"/>
+
+        <script>
+            $(
+                function () {
+
+                    // Gestion des cookies
+
+                    var NomCookie = getCookie("Nom");
+                    if (NomCookie != "") {
+                        $('#Nom').val(NomCookie);
+                    }
+
+                }
+            );
+
+        </script>
+
+        @using (Html.BeginForm("Login", "Authentification", FormMethod.Post, new { @class = "", role = "form" }))
+        {
+
+            <style>
+                fieldset .labelidentification {
+                    font-family: Arial;
+                    font-size: 100%;
+                    color: black;
+                    width: 200px;
+                }
+            </style>
+
+            @Html.AntiForgeryToken()
+
+            <div class="form-group">
+
+                @Html.LabelFor(m => m.Nom, new { @class = "labelidentification" })
+                @Html.TextBoxFor(model => model.Nom, new { @class = "form-control", @Autocomplete = "off" })
+                @Html.ValidationMessageFor(model => model.Nom, "", new { @class = "bg-primary" })
+            </div>
+
+            <div class="form-group">
+
+                @Html.LabelFor(m => m.MotDePasse, new { @class = "labelidentification" })
+                @Html.PasswordFor(model => model.MotDePasse, new { @class = "form-control"})
+                @Html.ValidationMessageFor(model => model.MotDePasse, "", new { @class = "bg-primary" })
+
+            </div>
+
+            <button type="submit" class="btn btn-default" style="width:100%;margin-top:10px;" onclick="EnregistrerCookie()">Entrer</button>
+            
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        }
+
+        <br />
+        <br />
+        <br />
+
+        @*Intégration du flux twitter*@
+
+        <a class="twitter-timeline" href="https://twitter.com/A_map_of?ref_src=twsrc%5Etfw">Last new features</a>
+        <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+    
+    </div>
+
+    <script>
+
+        function EnregistrerCookie() {
+            setCookie("Nom", $('#Nom').val(), 60);
+        }
+
+        function getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        }
+
+        function setCookie(cname, cvalue, exdays) {
+            var d = new Date();
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            var expires = "expires=" + d.toUTCString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+
+    </script>
+
+    
+</body>

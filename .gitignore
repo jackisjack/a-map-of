@@ -3,6 +3,10 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# Confidential files
+Web.Release.config
+DatabaseLocal_JackIsJack.publish.xml
+
 # User-specific files
 *.suo
 *.user

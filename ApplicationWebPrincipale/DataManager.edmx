@@ -1,0 +1,790 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SI_MANAGERModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ELEMENT">
+          <Key>
+            <PropertyRef Name="IDELEMENT" />
+          </Key>
+          <Property Name="IDELEMENT" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDELEMENTVUE" Type="int" Nullable="false" />
+          <Property Name="IDVUE" Type="int" Nullable="false" />
+          <Property Name="IDELEMENTVUEPARENT" Type="int" Nullable="false" />
+          <Property Name="IDOBJET" Type="int" Nullable="false" />
+          <Property Name="IDTYPEOBJETVUE" Type="int" Nullable="false" />
+          <Property Name="LIBELLE" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="X" Type="int" Nullable="false" />
+          <Property Name="Y" Type="int" Nullable="false" />
+          <Property Name="FORME" Type="int" Nullable="false" />
+          <Property Name="X_DELTA" Type="int" Nullable="false" />
+          <Property Name="Y_DELTA" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LIEN">
+          <Key>
+            <PropertyRef Name="IDLIEN" />
+          </Key>
+          <Property Name="IDOBJET1" Type="int" />
+          <Property Name="IDOBJET2" Type="int" />
+          <Property Name="DATE_CREATION" Type="date" />
+          <Property Name="DATE_SUPPRESSION" Type="date" />
+          <Property Name="IDLIEN" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="COMMENTAIRE" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="OBJET">
+          <Key>
+            <PropertyRef Name="IDOBJET" />
+          </Key>
+          <Property Name="IDOBJET" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDTYPEOBJET" Type="int" />
+          <Property Name="NOM" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="TUTO">
+          <Key>
+            <PropertyRef Name="IDTUTO" />
+          </Key>
+          <Property Name="IDTUTO" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LIBELLE" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="TUTODONE">
+          <Key>
+            <PropertyRef Name="IDTUTODONE" />
+          </Key>
+          <Property Name="IDTUTODONE" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDTUTO" Type="int" Nullable="false" />
+          <Property Name="IDUSER" Type="int" Nullable="false" />
+          <Property Name="DATE_CREATION" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TUTOSTEP">
+          <Key>
+            <PropertyRef Name="IDTUTOSTEP" />
+          </Key>
+          <Property Name="IDTUTOSTEP" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IDTUTO" Type="int" Nullable="false" />
+          <Property Name="INDICATION" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ORDRE" Type="int" Nullable="false" />
+          <Property Name="IDEVENTTOLISTEN" Type="nvarchar" MaxLength="50" />
+          <Property Name="JSFONCTION" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="TYPEOBJET">
+          <Key>
+            <PropertyRef Name="IDTYPEOBJET" />
+          </Key>
+          <Property Name="IDTYPEOBJET" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LIBELLE" Type="nvarchar(max)" />
+          <Property Name="FAVORISMENU" Type="nchar" MaxLength="10" />
+          <Property Name="ICONE" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="USER">
+          <Key>
+            <PropertyRef Name="IDUSER" />
+          </Key>
+          <Property Name="IDUSER" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NOM" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="MOTDEPASSE" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="USER_CREE" Type="int" Nullable="false" />
+          <Property Name="DATE_CREE" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="VUE">
+          <Key>
+            <PropertyRef Name="IDVUE" />
+          </Key>
+          <Property Name="IDVUE" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LIBELLE" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="USER_CREE" Type="int" Nullable="false" />
+          <Property Name="DATE_CREE" Type="datetime" Nullable="false" />
+          <Property Name="MAINCONTAINERX" Type="int" />
+          <Property Name="MAINCONTAINERY" Type="int" />
+        </EntityType>
+        <Association Name="FK_ELEMENT_OBJET">
+          <End Role="OBJET" Type="Self.OBJET" Multiplicity="1" />
+          <End Role="ELEMENT" Type="Self.ELEMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OBJET">
+              <PropertyRef Name="IDOBJET" />
+            </Principal>
+            <Dependent Role="ELEMENT">
+              <PropertyRef Name="IDOBJET" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ELEMENT_TYPEOBJET">
+          <End Role="TYPEOBJET" Type="Self.TYPEOBJET" Multiplicity="1" />
+          <End Role="ELEMENT" Type="Self.ELEMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TYPEOBJET">
+              <PropertyRef Name="IDTYPEOBJET" />
+            </Principal>
+            <Dependent Role="ELEMENT">
+              <PropertyRef Name="IDTYPEOBJETVUE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ELEMENT_VUE">
+          <End Role="VUE" Type="Self.VUE" Multiplicity="1" />
+          <End Role="ELEMENT" Type="Self.ELEMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VUE">
+              <PropertyRef Name="IDVUE" />
+            </Principal>
+            <Dependent Role="ELEMENT">
+              <PropertyRef Name="IDVUE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LIEN_OBJET">
+          <End Role="OBJET" Type="Self.OBJET" Multiplicity="0..1" />
+          <End Role="LIEN" Type="Self.LIEN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OBJET">
+              <PropertyRef Name="IDOBJET" />
+            </Principal>
+            <Dependent Role="LIEN">
+              <PropertyRef Name="IDOBJET1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LIEN_OBJET1">
+          <End Role="OBJET" Type="Self.OBJET" Multiplicity="0..1" />
+          <End Role="LIEN" Type="Self.LIEN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OBJET">
+              <PropertyRef Name="IDOBJET" />
+            </Principal>
+            <Dependent Role="LIEN">
+              <PropertyRef Name="IDOBJET2" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OBJET_TYPEOBJET">
+          <End Role="TYPEOBJET" Type="Self.TYPEOBJET" Multiplicity="0..1" />
+          <End Role="OBJET" Type="Self.OBJET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TYPEOBJET">
+              <PropertyRef Name="IDTYPEOBJET" />
+            </Principal>
+            <Dependent Role="OBJET">
+              <PropertyRef Name="IDTYPEOBJET" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TUTODONE_TUTODONE">
+          <End Role="TUTO" Type="Self.TUTO" Multiplicity="1" />
+          <End Role="TUTODONE" Type="Self.TUTODONE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TUTO">
+              <PropertyRef Name="IDTUTO" />
+            </Principal>
+            <Dependent Role="TUTODONE">
+              <PropertyRef Name="IDTUTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TUTODONE_USER">
+          <End Role="USER" Type="Self.USER" Multiplicity="1" />
+          <End Role="TUTODONE" Type="Self.TUTODONE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USER">
+              <PropertyRef Name="IDUSER" />
+            </Principal>
+            <Dependent Role="TUTODONE">
+              <PropertyRef Name="IDUSER" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TUTOSTEP_TUTOSTEP">
+          <End Role="TUTO" Type="Self.TUTO" Multiplicity="1" />
+          <End Role="TUTOSTEP" Type="Self.TUTOSTEP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TUTO">
+              <PropertyRef Name="IDTUTO" />
+            </Principal>
+            <Dependent Role="TUTOSTEP">
+              <PropertyRef Name="IDTUTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_USER_USER">
+          <End Role="USER" Type="Self.USER" Multiplicity="1" />
+          <End Role="USER1" Type="Self.USER" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USER">
+              <PropertyRef Name="IDUSER" />
+            </Principal>
+            <Dependent Role="USER1">
+              <PropertyRef Name="USER_CREE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VUE_USER">
+          <End Role="USER" Type="Self.USER" Multiplicity="1" />
+          <End Role="VUE" Type="Self.VUE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USER">
+              <PropertyRef Name="IDUSER" />
+            </Principal>
+            <Dependent Role="VUE">
+              <PropertyRef Name="USER_CREE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="DELETE_ALL_DATA" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="DETAIL_VUE" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IDVUE" Type="int" Mode="In" />
+        </Function>
+        <Function Name="LISTETUTOS" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IDUSER" Type="int" Mode="In" />
+        </Function>
+        <Function Name="NBTUTOTODO" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="IDUSER" Type="int" Mode="In" />
+        </Function>
+        <Function Name="USER_CREATION" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="NOM_UTILISATEUR" Type="nvarchar" Mode="In" />
+          <Parameter Name="MOT_DE_PASSE" Type="nvarchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="SI_MANAGERModelStoreContainer">
+          <EntitySet Name="ELEMENT" EntityType="Self.ELEMENT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LIEN" EntityType="Self.LIEN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OBJET" EntityType="Self.OBJET" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TUTO" EntityType="Self.TUTO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TUTODONE" EntityType="Self.TUTODONE" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TUTOSTEP" EntityType="Self.TUTOSTEP" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TYPEOBJET" EntityType="Self.TYPEOBJET" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USER" EntityType="Self.USER" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="VUE" EntityType="Self.VUE" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_ELEMENT_OBJET" Association="Self.FK_ELEMENT_OBJET">
+            <End Role="OBJET" EntitySet="OBJET" />
+            <End Role="ELEMENT" EntitySet="ELEMENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ELEMENT_TYPEOBJET" Association="Self.FK_ELEMENT_TYPEOBJET">
+            <End Role="TYPEOBJET" EntitySet="TYPEOBJET" />
+            <End Role="ELEMENT" EntitySet="ELEMENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ELEMENT_VUE" Association="Self.FK_ELEMENT_VUE">
+            <End Role="VUE" EntitySet="VUE" />
+            <End Role="ELEMENT" EntitySet="ELEMENT" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LIEN_OBJET" Association="Self.FK_LIEN_OBJET">
+            <End Role="OBJET" EntitySet="OBJET" />
+            <End Role="LIEN" EntitySet="LIEN" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LIEN_OBJET1" Association="Self.FK_LIEN_OBJET1">
+            <End Role="OBJET" EntitySet="OBJET" />
+            <End Role="LIEN" EntitySet="LIEN" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OBJET_TYPEOBJET" Association="Self.FK_OBJET_TYPEOBJET">
+            <End Role="TYPEOBJET" EntitySet="TYPEOBJET" />
+            <End Role="OBJET" EntitySet="OBJET" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TUTODONE_TUTODONE" Association="Self.FK_TUTODONE_TUTODONE">
+            <End Role="TUTO" EntitySet="TUTO" />
+            <End Role="TUTODONE" EntitySet="TUTODONE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TUTODONE_USER" Association="Self.FK_TUTODONE_USER">
+            <End Role="USER" EntitySet="USER" />
+            <End Role="TUTODONE" EntitySet="TUTODONE" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TUTOSTEP_TUTOSTEP" Association="Self.FK_TUTOSTEP_TUTOSTEP">
+            <End Role="TUTO" EntitySet="TUTO" />
+            <End Role="TUTOSTEP" EntitySet="TUTOSTEP" />
+          </AssociationSet>
+          <AssociationSet Name="FK_USER_USER" Association="Self.FK_USER_USER">
+            <End Role="USER" EntitySet="USER" />
+            <End Role="USER1" EntitySet="USER" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VUE_USER" Association="Self.FK_VUE_USER">
+            <End Role="USER" EntitySet="USER" />
+            <End Role="VUE" EntitySet="VUE" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="A_MAP_OFModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="OBJET">
+          <Key>
+            <PropertyRef Name="IDOBJET" />
+          </Key>
+          <Property Name="IDOBJET" Type="Int32" Nullable="false" />
+          <Property Name="IDTYPEOBJET" Type="Int32" />
+          <Property Name="NOM" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TYPEOBJET" Relationship="A_MAP_OFModel.FK_OBJET_TYPEOBJET" FromRole="OBJET" ToRole="TYPEOBJET" />
+          <NavigationProperty Name="LIENs" Relationship="A_MAP_OFModel.FK_LIEN_OBJET" FromRole="OBJET" ToRole="LIEN" />
+          <NavigationProperty Name="LIENs1" Relationship="A_MAP_OFModel.FK_LIEN_OBJET1" FromRole="OBJET" ToRole="LIEN" />
+          <NavigationProperty Name="ELEMENTs" Relationship="A_MAP_OFModel.FK_ELEMENT_OBJET" FromRole="OBJET" ToRole="ELEMENT" />
+        </EntityType>
+        <EntityType Name="TYPEOBJET">
+          <Key>
+            <PropertyRef Name="IDTYPEOBJET" />
+          </Key>
+          <Property Name="IDTYPEOBJET" Type="Int32" Nullable="false" />
+          <Property Name="LIBELLE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FAVORISMENU" Type="String" MaxLength="10" FixedLength="true" Unicode="true" a:GetterAccess="Public" xmlns:a="http://schemas.microsoft.com/ado/2006/04/codegeneration" />
+          <Property Name="ICONE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="OBJETs" Relationship="A_MAP_OFModel.FK_OBJET_TYPEOBJET" FromRole="TYPEOBJET" ToRole="OBJET" />
+          <NavigationProperty Name="ELEMENTs" Relationship="A_MAP_OFModel.FK_ELEMENT_TYPEOBJET" FromRole="TYPEOBJET" ToRole="ELEMENT" />
+        </EntityType>
+        <EntityContainer Name="A_MAP_OFEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="OBJET" EntityType="Self.OBJET" />
+          <EntitySet Name="TYPEOBJET" EntityType="Self.TYPEOBJET" />
+          <AssociationSet Name="FK_OBJET_TYPEOBJET" Association="A_MAP_OFModel.FK_OBJET_TYPEOBJET">
+            <End Role="TYPEOBJET" EntitySet="TYPEOBJET" />
+            <End Role="OBJET" EntitySet="OBJET" />
+          </AssociationSet>
+          <EntitySet Name="LIENs" EntityType="A_MAP_OFModel.LIEN" />
+          <AssociationSet Name="FK_LIEN_OBJET" Association="A_MAP_OFModel.FK_LIEN_OBJET">
+            <End Role="OBJET" EntitySet="OBJET" />
+            <End Role="LIEN" EntitySet="LIENs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LIEN_OBJET1" Association="A_MAP_OFModel.FK_LIEN_OBJET1">
+            <End Role="OBJET" EntitySet="OBJET" />
+            <End Role="LIEN" EntitySet="LIENs" />
+          </AssociationSet>
+          <EntitySet Name="VUEs" EntityType="A_MAP_OFModel.VUE" />
+          <EntitySet Name="USERs" EntityType="A_MAP_OFModel.USER" />
+          <AssociationSet Name="FK_USER_USER" Association="A_MAP_OFModel.FK_USER_USER">
+            <End Role="USER" EntitySet="USERs" />
+            <End Role="USER1" EntitySet="USERs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_VUE_USER" Association="A_MAP_OFModel.FK_VUE_USER">
+            <End Role="USER" EntitySet="USERs" />
+            <End Role="VUE" EntitySet="VUEs" />
+          </AssociationSet>
+          <EntitySet Name="TUTOes" EntityType="A_MAP_OFModel.TUTO" />
+          <EntitySet Name="TUTOSTEPs" EntityType="A_MAP_OFModel.TUTOSTEP" />
+          <AssociationSet Name="FK_TUTOSTEP_TUTOSTEP" Association="A_MAP_OFModel.FK_TUTOSTEP_TUTOSTEP">
+            <End Role="TUTO" EntitySet="TUTOes" />
+            <End Role="TUTOSTEP" EntitySet="TUTOSTEPs" />
+          </AssociationSet>
+          <EntitySet Name="TUTODONEs" EntityType="A_MAP_OFModel.TUTODONE" />
+          <AssociationSet Name="FK_TUTODONE_TUTODONE" Association="A_MAP_OFModel.FK_TUTODONE_TUTODONE">
+            <End Role="TUTO" EntitySet="TUTOes" />
+            <End Role="TUTODONE" EntitySet="TUTODONEs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TUTODONE_USER" Association="A_MAP_OFModel.FK_TUTODONE_USER">
+            <End Role="USER" EntitySet="USERs" />
+            <End Role="TUTODONE" EntitySet="TUTODONEs" />
+          </AssociationSet>
+          <FunctionImport Name="LISTETUTOS" ReturnType="Collection(A_MAP_OFModel.LISTETUTOS_Result)">
+          <Parameter Name="IDUSER" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="NBTUTOTODO" ReturnType="Collection(Int32)">
+          <Parameter Name="IDUSER" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="DELETE_ALL_DATA" />
+          <FunctionImport Name="DETAIL_VUE" ReturnType="Collection(A_MAP_OFModel.DETAIL_VUE_Result)">
+          <Parameter Name="IDVUE" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="USER_CREATION">
+            <Parameter Name="NOM_UTILISATEUR" Mode="In" Type="String" />
+            <Parameter Name="MOT_DE_PASSE" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="ELEMENTs" EntityType="A_MAP_OFModel.ELEMENT" />
+          <AssociationSet Name="FK_ELEMENT_OBJET" Association="A_MAP_OFModel.FK_ELEMENT_OBJET">
+            <End Role="OBJET" EntitySet="OBJET" />
+            <End Role="ELEMENT" EntitySet="ELEMENTs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ELEMENT_VUE" Association="A_MAP_OFModel.FK_ELEMENT_VUE">
+            <End Role="VUE" EntitySet="VUEs" />
+            <End Role="ELEMENT" EntitySet="ELEMENTs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ELEMENT_TYPEOBJET" Association="A_MAP_OFModel.FK_ELEMENT_TYPEOBJET">
+            <End Role="TYPEOBJET" EntitySet="TYPEOBJET" />
+            <End Role="ELEMENT" EntitySet="ELEMENTs" />
+          </AssociationSet>
+          </EntityContainer>
+        <Association Name="FK_OBJET_TYPEOBJET">
+          <End Type="A_MAP_OFModel.TYPEOBJET" Role="TYPEOBJET" Multiplicity="0..1" />
+          <End Type="A_MAP_OFModel.OBJET" Role="OBJET" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TYPEOBJET">
+              <PropertyRef Name="IDTYPEOBJET" />
+            </Principal>
+            <Dependent Role="OBJET">
+              <PropertyRef Name="IDTYPEOBJET" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="LIEN">
+          <Key>
+            <PropertyRef Name="IDLIEN" />
+          </Key>
+          <Property Name="IDOBJET1" Type="Int32" />
+          <Property Name="IDOBJET2" Type="Int32" />
+          <Property Name="DATE_CREATION" Type="DateTime" Precision="0" />
+          <Property Name="DATE_SUPPRESSION" Type="DateTime" Precision="0" />
+          <Property Name="COMMENTAIRE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IDLIEN" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="OBJET" Relationship="A_MAP_OFModel.FK_LIEN_OBJET" FromRole="LIEN" ToRole="OBJET" />
+          <NavigationProperty Name="OBJET1" Relationship="A_MAP_OFModel.FK_LIEN_OBJET1" FromRole="LIEN" ToRole="OBJET" />
+        </EntityType>
+        <Association Name="FK_LIEN_OBJET">
+          <End Type="A_MAP_OFModel.OBJET" Role="OBJET" Multiplicity="0..1" />
+          <End Type="A_MAP_OFModel.LIEN" Role="LIEN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OBJET">
+              <PropertyRef Name="IDOBJET" />
+            </Principal>
+            <Dependent Role="LIEN">
+              <PropertyRef Name="IDOBJET1" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LIEN_OBJET1">
+          <End Type="A_MAP_OFModel.OBJET" Role="OBJET" Multiplicity="0..1" />
+          <End Type="A_MAP_OFModel.LIEN" Role="LIEN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OBJET">
+              <PropertyRef Name="IDOBJET" />
+            </Principal>
+            <Dependent Role="LIEN">
+              <PropertyRef Name="IDOBJET2" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="VUE">
+          <Key>
+            <PropertyRef Name="IDVUE" />
+          </Key>
+          <Property Name="IDVUE" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LIBELLE" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="USER_CREE" Type="Int32" Nullable="false" />
+          <Property Name="DATE_CREE" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="USER" Relationship="A_MAP_OFModel.FK_VUE_USER" FromRole="VUE" ToRole="USER" />
+          <Property Name="MAINCONTAINERX" Type="Int32" />
+          <Property Name="MAINCONTAINERY" Type="Int32" />
+          <NavigationProperty Name="ELEMENTs" Relationship="A_MAP_OFModel.FK_ELEMENT_VUE" FromRole="VUE" ToRole="ELEMENT" />
+        </EntityType>
+        <EntityType Name="USER">
+          <Key>
+            <PropertyRef Name="IDUSER" />
+          </Key>
+          <Property Name="IDUSER" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NOM" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="MOTDEPASSE" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="USER_CREE" Type="Int32" Nullable="false" />
+          <Property Name="DATE_CREE" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="USER1" Relationship="A_MAP_OFModel.FK_USER_USER" FromRole="USER" ToRole="USER1" />
+          <NavigationProperty Name="USER2" Relationship="A_MAP_OFModel.FK_USER_USER" FromRole="USER1" ToRole="USER" />
+          <NavigationProperty Name="VUEs" Relationship="A_MAP_OFModel.FK_VUE_USER" FromRole="USER" ToRole="VUE" />
+          <NavigationProperty Name="TUTODONEs" Relationship="A_MAP_OFModel.FK_TUTODONE_USER" FromRole="USER" ToRole="TUTODONE" />
+        </EntityType>
+        <Association Name="FK_USER_USER">
+          <End Type="A_MAP_OFModel.USER" Role="USER" Multiplicity="1" />
+          <End Type="A_MAP_OFModel.USER" Role="USER1" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USER">
+              <PropertyRef Name="IDUSER" />
+            </Principal>
+            <Dependent Role="USER1">
+              <PropertyRef Name="USER_CREE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_VUE_USER">
+          <End Type="A_MAP_OFModel.USER" Role="USER" Multiplicity="1" />
+          <End Type="A_MAP_OFModel.VUE" Role="VUE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USER">
+              <PropertyRef Name="IDUSER" />
+            </Principal>
+            <Dependent Role="VUE">
+              <PropertyRef Name="USER_CREE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="TUTO">
+          <Key>
+            <PropertyRef Name="IDTUTO" />
+          </Key>
+          <Property Name="IDTUTO" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LIBELLE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="TUTOSTEPs" Relationship="A_MAP_OFModel.FK_TUTOSTEP_TUTOSTEP" FromRole="TUTO" ToRole="TUTOSTEP" />
+          <NavigationProperty Name="TUTODONEs" Relationship="A_MAP_OFModel.FK_TUTODONE_TUTODONE" FromRole="TUTO" ToRole="TUTODONE" />
+        </EntityType>
+        <EntityType Name="TUTOSTEP">
+          <Key>
+            <PropertyRef Name="IDTUTOSTEP" />
+          </Key>
+          <Property Name="IDTUTOSTEP" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDTUTO" Type="Int32" Nullable="false" />
+          <Property Name="INDICATION" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ORDRE" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TUTO" Relationship="A_MAP_OFModel.FK_TUTOSTEP_TUTOSTEP" FromRole="TUTOSTEP" ToRole="TUTO" />
+          <Property Name="IDEVENTTOLISTEN" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="JSFONCTION" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_TUTOSTEP_TUTOSTEP">
+          <End Type="A_MAP_OFModel.TUTO" Role="TUTO" Multiplicity="1" />
+          <End Type="A_MAP_OFModel.TUTOSTEP" Role="TUTOSTEP" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TUTO">
+              <PropertyRef Name="IDTUTO" />
+            </Principal>
+            <Dependent Role="TUTOSTEP">
+              <PropertyRef Name="IDTUTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="TUTODONE">
+          <Key>
+            <PropertyRef Name="IDTUTODONE" />
+          </Key>
+          <Property Name="IDTUTODONE" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDTUTO" Type="Int32" Nullable="false" />
+          <Property Name="IDUSER" Type="Int32" Nullable="false" />
+          <Property Name="DATE_CREATION" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="TUTO" Relationship="A_MAP_OFModel.FK_TUTODONE_TUTODONE" FromRole="TUTODONE" ToRole="TUTO" />
+          <NavigationProperty Name="USER" Relationship="A_MAP_OFModel.FK_TUTODONE_USER" FromRole="TUTODONE" ToRole="USER" />
+        </EntityType>
+        <Association Name="FK_TUTODONE_TUTODONE">
+          <End Type="A_MAP_OFModel.TUTO" Role="TUTO" Multiplicity="1" />
+          <End Type="A_MAP_OFModel.TUTODONE" Role="TUTODONE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TUTO">
+              <PropertyRef Name="IDTUTO" />
+            </Principal>
+            <Dependent Role="TUTODONE">
+              <PropertyRef Name="IDTUTO" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TUTODONE_USER">
+          <End Type="A_MAP_OFModel.USER" Role="USER" Multiplicity="1" />
+          <End Type="A_MAP_OFModel.TUTODONE" Role="TUTODONE" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USER">
+              <PropertyRef Name="IDUSER" />
+            </Principal>
+            <Dependent Role="TUTODONE">
+              <PropertyRef Name="IDUSER" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="LISTETUTOS_Result">
+          <Property Type="Int32" Name="IDTUTO" Nullable="false" />
+          <Property Type="String" Name="LIBELLE" Nullable="true" />
+          <Property Type="String" Name="DEJAFAIT" Nullable="false" MaxLength="9" />
+        </ComplexType>
+        <ComplexType Name="DETAIL_VUE_Result">
+          <Property Type="Int32" Name="IDVUE" Nullable="false" />
+          <Property Type="String" Name="LIBELLE" Nullable="false" />
+          <Property Type="Int32" Name="USER_CREE" Nullable="false" />
+          <Property Type="DateTime" Name="DATE_CREE" Nullable="false" Precision="23" />
+          <Property Type="Int32" Name="MAINCONTAINERX" Nullable="true" />
+          <Property Type="Int32" Name="MAINCONTAINERY" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="ELEMENT">
+          <Key>
+            <PropertyRef Name="IDELEMENT" />
+          </Key>
+          <Property Name="IDELEMENT" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IDELEMENTVUE" Type="Int32" Nullable="false" />
+          <Property Name="IDVUE" Type="Int32" Nullable="false" />
+          <Property Name="IDELEMENTVUEPARENT" Type="Int32" Nullable="false" />
+          <Property Name="IDOBJET" Type="Int32" Nullable="false" />
+          <Property Name="LIBELLE" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="X" Type="Int32" Nullable="false" />
+          <Property Name="Y" Type="Int32" Nullable="false" />
+          <Property Name="FORME" Type="Int32" Nullable="false" />
+          <Property Name="X_DELTA" Type="Int32" Nullable="false" />
+          <Property Name="Y_DELTA" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="OBJET" Relationship="A_MAP_OFModel.FK_ELEMENT_OBJET" FromRole="ELEMENT" ToRole="OBJET" />
+          <NavigationProperty Name="VUE" Relationship="A_MAP_OFModel.FK_ELEMENT_VUE" FromRole="ELEMENT" ToRole="VUE" />
+          <Property Name="IDTYPEOBJETVUE" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="TYPEOBJET" Relationship="A_MAP_OFModel.FK_ELEMENT_TYPEOBJET" FromRole="ELEMENT" ToRole="TYPEOBJET" />
+        </EntityType>
+        <Association Name="FK_ELEMENT_OBJET">
+          <End Type="A_MAP_OFModel.OBJET" Role="OBJET" Multiplicity="1" />
+          <End Type="A_MAP_OFModel.ELEMENT" Role="ELEMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="OBJET">
+              <PropertyRef Name="IDOBJET" />
+            </Principal>
+            <Dependent Role="ELEMENT">
+              <PropertyRef Name="IDOBJET" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ELEMENT_VUE">
+          <End Type="A_MAP_OFModel.VUE" Role="VUE" Multiplicity="1" />
+          <End Type="A_MAP_OFModel.ELEMENT" Role="ELEMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="VUE">
+              <PropertyRef Name="IDVUE" />
+            </Principal>
+            <Dependent Role="ELEMENT">
+              <PropertyRef Name="IDVUE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ELEMENT_TYPEOBJET">
+          <End Type="A_MAP_OFModel.TYPEOBJET" Role="TYPEOBJET" Multiplicity="1" />
+          <End Type="A_MAP_OFModel.ELEMENT" Role="ELEMENT" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TYPEOBJET">
+              <PropertyRef Name="IDTYPEOBJET" />
+            </Principal>
+            <Dependent Role="ELEMENT">
+              <PropertyRef Name="IDTYPEOBJETVUE" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SI_MANAGERModelStoreContainer" CdmEntityContainer="A_MAP_OFEntities">
+          <EntitySetMapping Name="OBJET">
+            <EntityTypeMapping TypeName="A_MAP_OFModel.OBJET">
+              <MappingFragment StoreEntitySet="OBJET">
+                <ScalarProperty Name="NOM" ColumnName="NOM" />
+                <ScalarProperty Name="IDOBJET" ColumnName="IDOBJET" />
+                <ScalarProperty Name="IDTYPEOBJET" ColumnName="IDTYPEOBJET" />
+                </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TYPEOBJET">
+            <EntityTypeMapping TypeName="A_MAP_OFModel.TYPEOBJET">
+              <MappingFragment StoreEntitySet="TYPEOBJET">
+                <ScalarProperty Name="IDTYPEOBJET" ColumnName="IDTYPEOBJET" />
+                <ScalarProperty Name="LIBELLE" ColumnName="LIBELLE" />
+                <ScalarProperty Name="FAVORISMENU" ColumnName="FAVORISMENU" />
+                <ScalarProperty Name="ICONE" ColumnName="ICONE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LIENs">
+            <EntityTypeMapping TypeName="A_MAP_OFModel.LIEN">
+              <MappingFragment StoreEntitySet="LIEN">
+                <ScalarProperty Name="IDLIEN" ColumnName="IDLIEN" />
+                <ScalarProperty Name="COMMENTAIRE" ColumnName="COMMENTAIRE" />
+                <ScalarProperty Name="DATE_SUPPRESSION" ColumnName="DATE_SUPPRESSION" />
+                <ScalarProperty Name="DATE_CREATION" ColumnName="DATE_CREATION" />
+                <ScalarProperty Name="IDOBJET2" ColumnName="IDOBJET2" />
+                <ScalarProperty Name="IDOBJET1" ColumnName="IDOBJET1" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="VUEs">
+            <EntityTypeMapping TypeName="A_MAP_OFModel.VUE">
+              <MappingFragment StoreEntitySet="VUE">
+                <ScalarProperty Name="MAINCONTAINERY" ColumnName="MAINCONTAINERY" />
+                <ScalarProperty Name="MAINCONTAINERX" ColumnName="MAINCONTAINERX" />
+                <ScalarProperty Name="DATE_CREE" ColumnName="DATE_CREE" />
+                <ScalarProperty Name="USER_CREE" ColumnName="USER_CREE" />
+                <ScalarProperty Name="LIBELLE" ColumnName="LIBELLE" />
+                <ScalarProperty Name="IDVUE" ColumnName="IDVUE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USERs">
+            <EntityTypeMapping TypeName="A_MAP_OFModel.USER">
+              <MappingFragment StoreEntitySet="USER">
+                <ScalarProperty Name="DATE_CREE" ColumnName="DATE_CREE" />
+                <ScalarProperty Name="USER_CREE" ColumnName="USER_CREE" />
+                <ScalarProperty Name="MOTDEPASSE" ColumnName="MOTDEPASSE" />
+                <ScalarProperty Name="NOM" ColumnName="NOM" />
+                <ScalarProperty Name="IDUSER" ColumnName="IDUSER" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TUTOes">
+            <EntityTypeMapping TypeName="A_MAP_OFModel.TUTO">
+              <MappingFragment StoreEntitySet="TUTO">
+                <ScalarProperty Name="LIBELLE" ColumnName="LIBELLE" />
+                <ScalarProperty Name="IDTUTO" ColumnName="IDTUTO" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TUTOSTEPs">
+            <EntityTypeMapping TypeName="A_MAP_OFModel.TUTOSTEP">
+              <MappingFragment StoreEntitySet="TUTOSTEP">
+                <ScalarProperty Name="JSFONCTION" ColumnName="JSFONCTION" />
+                <ScalarProperty Name="IDEVENTTOLISTEN" ColumnName="IDEVENTTOLISTEN" />
+                <ScalarProperty Name="ORDRE" ColumnName="ORDRE" />
+                <ScalarProperty Name="INDICATION" ColumnName="INDICATION" />
+                <ScalarProperty Name="IDTUTO" ColumnName="IDTUTO" />
+                <ScalarProperty Name="IDTUTOSTEP" ColumnName="IDTUTOSTEP" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TUTODONEs">
+            <EntityTypeMapping TypeName="A_MAP_OFModel.TUTODONE">
+              <MappingFragment StoreEntitySet="TUTODONE">
+                <ScalarProperty Name="DATE_CREATION" ColumnName="DATE_CREATION" />
+                <ScalarProperty Name="IDUSER" ColumnName="IDUSER" />
+                <ScalarProperty Name="IDTUTO" ColumnName="IDTUTO" />
+                <ScalarProperty Name="IDTUTODONE" ColumnName="IDTUTODONE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="LISTETUTOS" FunctionName="SI_MANAGERModel.Store.LISTETUTOS">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="A_MAP_OFModel.LISTETUTOS_Result">
+                <ScalarProperty Name="IDTUTO" ColumnName="IDTUTO" />
+                <ScalarProperty Name="LIBELLE" ColumnName="LIBELLE" />
+                <ScalarProperty Name="DEJAFAIT" ColumnName="DEJAFAIT" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="NBTUTOTODO" FunctionName="SI_MANAGERModel.Store.NBTUTOTODO" />
+          <FunctionImportMapping FunctionImportName="DELETE_ALL_DATA" FunctionName="SI_MANAGERModel.Store.DELETE_ALL_DATA" />
+          <FunctionImportMapping FunctionImportName="DETAIL_VUE" FunctionName="SI_MANAGERModel.Store.DETAIL_VUE">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="A_MAP_OFModel.DETAIL_VUE_Result">
+                <ScalarProperty Name="IDVUE" ColumnName="IDVUE" />
+                <ScalarProperty Name="LIBELLE" ColumnName="LIBELLE" />
+                <ScalarProperty Name="USER_CREE" ColumnName="USER_CREE" />
+                <ScalarProperty Name="DATE_CREE" ColumnName="DATE_CREE" />
+                <ScalarProperty Name="MAINCONTAINERX" ColumnName="MAINCONTAINERX" />
+                <ScalarProperty Name="MAINCONTAINERY" ColumnName="MAINCONTAINERY" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="USER_CREATION" FunctionName="SI_MANAGERModel.Store.USER_CREATION" />
+          <EntitySetMapping Name="ELEMENTs">
+            <EntityTypeMapping TypeName="A_MAP_OFModel.ELEMENT">
+              <MappingFragment StoreEntitySet="ELEMENT">
+                <ScalarProperty Name="IDTYPEOBJETVUE" ColumnName="IDTYPEOBJETVUE" />
+                <ScalarProperty Name="Y_DELTA" ColumnName="Y_DELTA" />
+                <ScalarProperty Name="X_DELTA" ColumnName="X_DELTA" />
+                <ScalarProperty Name="FORME" ColumnName="FORME" />
+                <ScalarProperty Name="Y" ColumnName="Y" />
+                <ScalarProperty Name="X" ColumnName="X" />
+                <ScalarProperty Name="LIBELLE" ColumnName="LIBELLE" />
+                <ScalarProperty Name="IDOBJET" ColumnName="IDOBJET" />
+                <ScalarProperty Name="IDELEMENTVUEPARENT" ColumnName="IDELEMENTVUEPARENT" />
+                <ScalarProperty Name="IDVUE" ColumnName="IDVUE" />
+                <ScalarProperty Name="IDELEMENTVUE" ColumnName="IDELEMENTVUE" />
+                <ScalarProperty Name="IDELEMENT" ColumnName="IDELEMENT" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Aucun" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
